@@ -10,37 +10,22 @@ public class VertexMaker : MonoBehaviour
 
 	public float navRadius = 0.45f;
 	public LayerMask lm;
-
-	static List<Vector3> vertices;
-
-
-	public static void AddVertex(Vector3 newVertex)
-	{
-		//keeps track of all vertices
-		if (vertices == null)
-			vertices = new List<Vector3>();
-		vertices.Add(newVertex);
-
-
-	}
+	private Triangulation tri;
+	
 
     void Awake()
     {
+
+		tri = GetComponentInParent<Triangulation>();
 
 		Vector3 origin = transform.position + (Vector3.up * 1.1f);
 
 		//origin = origin + (Vector3.forward * 1.5f) + (Vector3.right * 1.5f);
 
-
-
-
 		for (int j = 0; j < 4; j++)
 		{
 			Vector3 offset = new Vector3( j%2 == 0 ? ( 2f * navRadius + 0.05f) : size - (2f * navRadius + 0.05f), 0, j < 2 ? (2f * navRadius + 0.05f) : size - ( 2f * navRadius + 0.05f));
-
-
 			bool[] hits = new bool[8];
-
 
 			for (int i = 0; i < 8; i++)
 			{
@@ -79,21 +64,16 @@ public class VertexMaker : MonoBehaviour
 				{
 					offset = new Vector3(j % 2 == 0 ? (2f * navRadius + 0.05f) : size - (2f * navRadius + 0.05f), 0, j < 2 ? (2f * navRadius + 0.05f) : size - (2f * navRadius + 0.05f));
 					Debug.DrawRay(transform.position + offset, Vector3.up * 2.0f,Color.yellow,Mathf.Infinity);
-					VertexMaker.AddVertex(transform.position + offset + Vector3.up);
+
+					if (tri != null)
+						tri.AddCorner(transform.position + offset + Vector3.up);
+					else
+						Debug.Log("no triangulation found in parent, vertex discarded");
 					break;
 
 				}
 			}
-
-
 		}
-
-        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
