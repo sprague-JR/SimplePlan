@@ -63,8 +63,7 @@ public class VertexMaker : MonoBehaviour
 				if(consecutive != 1 && (consecutive != 4 || i%2 == 1))
 				{
 					offset = new Vector3(j % 2 == 0 ? (2f * navRadius + 0.05f) : size - (2f * navRadius + 0.05f), 0, j < 2 ? (2f * navRadius + 0.05f) : size - (2f * navRadius + 0.05f));
-					Debug.DrawRay(transform.position + offset, Vector3.up * 2.0f,Color.yellow,Mathf.Infinity);
-
+					
 					if (tri != null)
 						tri.AddCorner(transform.position + offset + Vector3.up);
 					else
